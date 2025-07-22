@@ -1,5 +1,7 @@
 #root {
   margin: 0 auto;
+  color: #E84636;
+  text-align: center;
 }
 
 .logo {
@@ -20,6 +22,23 @@
   background-color: #FBF0E5;
   display: flex;
   flex-direction: column;
-  color: #E84636;
-  text-align: center;
 }
+
+.sidebar p {
+  font-style: italic;
+}
+
+.canvas-wrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+}
+
+.canvas {
+  background-color: #F7E1CA;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
