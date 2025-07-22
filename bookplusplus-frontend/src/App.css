@@ -1,14 +1,25 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 .logo {
-  height: 10em;
-  padding: 1.5em;
+  padding: 1em;
 }
 .logo:hover {
-  rotate: 5deg;
+  transform: rotate(-5deg);
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar {
+  width: 130px;
+  background-color: #FBF0E5;
+  display: flex;
+  flex-direction: column;
+  color: #E84636;
+  text-align: center;
 }
