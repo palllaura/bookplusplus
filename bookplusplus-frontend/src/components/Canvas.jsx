@@ -1,17 +1,22 @@
 import '../App.css';
-import {useEffect, useRef} from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { createBook } from '../utils/createBook';
 
-const Canvas = ({ books }) => {
+const Canvas = forwardRef(({ books }, ref) => {
     const canvasRef = useRef(null);
     const draggingBookRef = useRef(null);
     const offsetRef = useRef({ x: 0, y: 0 });
-
-    function createBook({bookWidthInMm = 50, bookHeightInMm = 120, color = '#D9722C', xposition = 100, yposition = 200,
-                            title = 'Untitled'}) {
-        return {width: bookWidthInMm, height: bookHeightInMm, color, x: xposition, y: yposition, title};
-    }
-
     const booksRef = useRef([]);
+
+    useImperativeHandle(ref, () => ({
+        getCurrentBookLocations: () => {
+            return booksRef.current.map(book => ({
+                id: book.id,
+                xposition: book.x,
+                yposition: book.y
+            }));
+        }
+    }));
 
     useEffect(() => {
         booksRef.current = books.map(book => createBook(book));
@@ -112,6 +117,6 @@ const Canvas = ({ books }) => {
     }, []);
 
     return <canvas className="canvas" ref={canvasRef}/>;
-};
+});
 
 export default Canvas;

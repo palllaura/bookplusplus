@@ -1,35 +1,47 @@
 import './App.css'
 import Sidebar from "./components/Sidebar.jsx";
 import Canvas from "./components/Canvas.jsx";
-import {useEffect, useState} from "react";
+import {fetchBooks, saveBookLocations} from './services/bookService';
+import {useEffect, useRef, useState} from "react";
 
 function App() {
     const [books, setBooks] = useState([]);
-
-    const fetchBooks = () => {
-        return fetch('http://localhost:8080/api/allBooks')
-            .then(res => res.json())
-            .then(data => {
-                setBooks(data);
-                console.log('Fetched books:', data);
-            });
-    };
+    const canvasRef = useRef(null);
 
     useEffect(() => {
-        fetchBooks();
+        async function loadBooks() {
+            try {
+                const data = await fetchBooks();
+                setBooks(data);
+                console.log('Fetched books:', data);
+            } catch (error) {
+                console.error('Failed to fetch books:', error);
+            }
+        }
+        loadBooks();
     }, []);
 
+    const handleSave = async () => {
+        if (!canvasRef.current) return;
 
-  return (
-      <div className="app-container">
-          <Sidebar/>
-          <div className="canvas-wrapper">
-              <Canvas
-                  books={books}
-              />
-          </div>
-      </div>
-  )
+        const bookLocations = canvasRef.current.getCurrentBookLocations();
+
+        try {
+            await saveBookLocations(bookLocations);
+            console.log('Book locations saved successfully!');
+        } catch (error) {
+            console.error('Failed to save book locations:', error);
+        }
+    };
+
+    return (
+        <div className="app-container">
+            <Sidebar onSave={handleSave} />
+            <div className="canvas-wrapper">
+                <Canvas ref={canvasRef} books={books} />
+            </div>
+        </div>
+    )
 }
 
 export default App

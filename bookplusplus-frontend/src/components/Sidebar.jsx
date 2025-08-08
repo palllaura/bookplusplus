@@ -2,7 +2,7 @@ import logo from "../assets/logo.png";
 import save from "../assets/savebutton.png"
 import '../App.css';
 
-function Sidebar() {
+function Sidebar({ onSave }) {
 
     return (
         <div className="sidebar">
@@ -11,7 +11,11 @@ function Sidebar() {
                 <h3>"It’s my story so clearly I’m the hero."</h3>
                 <p>- Donatella</p>
             </div>
-            <img src={save} className="save-button" alt="save button"/>
+            <img src={save}
+                 className="save-button"
+                 alt="save button"
+                 onClick={onSave}
+            />
         </div>
     );
 }
