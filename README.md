@@ -3,10 +3,11 @@ A draggable 2D bookshelf
 
 ## Features
 
-* Add and edit books
+* Add new books (not yet)
 * Rearrange existing books by dragging them around
-* Delete unwanted books
-* Add additional bookshelves if necessary
+* Edit existing books (not yet)
+* Delete unwanted books (not yet)
+* Add additional bookshelves if necessary (not yet)
 * Load initial data from an SQL file
 * Backend built with Java + Spring Boot
 * Frontend built with React + Canvas
@@ -25,7 +26,15 @@ A draggable 2D bookshelf
 ### Database (PostgreSQL via Docker)
 1. Run the container:
    ```bash
-   docker run -d -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 --name postgres-db
+1. Run the container:
+      ```bash
+   docker run -d \
+     --name postgres-db \
+     -e POSTGRES_USER=postgres \
+     -e POSTGRES_PASSWORD=postgres \
+     -e POSTGRES_DB=bookplusplus \
+     -p 5432:5432 \
+     postgres:15
 
 ### Backend (Spring Boot)
 1. Clone the repository:
@@ -53,4 +62,7 @@ A draggable 2D bookshelf
    npm run dev
 4. The frontend will be available at:
    http://localhost:5173
+
+<img width="741" height="496" alt="Screenshot 2025-08-08 at 16 48 17" src="https://github.com/user-attachments/assets/85772325-d238-41d2-a3d2-1f9fb65e54c4" />
+
 
