@@ -1,7 +1,22 @@
-DELETE from book;
-
 INSERT INTO book (id, title, width, height, color, x, y)
-VALUES (1001, 'book 1', 50, 120, '#D9722C', 100, 100),
-       (1002, 'book 2', 60, 120, '#E84636', 160, 100),
-       (1003, 'book 3', 80, 140, '#ffb72b', 230, 80)
+VALUES (1001, 'A Court of Mist and Fury', 62, 120, '#01a596', 100, 100),
+       (1000, 'A Court of Thorns and Roses', 42, 120, '#e83c4e', 160, 100),
+       (999, 'A Curse for True Love', 39, 140, '#070101', 160, 100),
+       (998, 'The Ballad of Never After', 42, 140, '#252d5e', 160, 100),
+       (997, 'Once Upon a Broken Heart', 43, 140, '#070101', 160, 100),
+       (996, 'Spectacular', 21, 140, '#c91b22', 160, 100),
+       (995, 'Finale', 48, 120, '#b65b3f', 160, 100),
+       (994, 'Legendary', 43, 120, '#131341', 160, 100),
+       (993, 'Caraval', 41, 120, '#000000', 160, 100),
+       (992, 'Murder on the Clifftops', 27, 130, '#08122f', 160, 100),
+       (991, 'Two Twisted Crowns', 44, 120, '#7b9e91', 160, 100),
+       (990, 'One Dark Window', 39, 120, '#165445', 160, 100),
+       (989, 'Surm Ivy House''is', 23, 130, '#002a51', 160, 100),
+       (988, 'Vow of Thieves', 50, 120, '#c5201f', 160, 100),
+       (987, 'Dance of Thieves', 53, 120, '#102232', 160, 100),
+       (986, 'Hackers', 46, 120, '#373737', 160, 100),
+       (985, 'Paadimehe tõed', 13, 100, '#fdbb1e', 160, 100),
+       (984, 'Onyx Storm', 76, 120, '#0b0d0c', 160, 100),
+       (983, 'Iron Flame', 79, 120, '#d38542', 160, 100),
+       (982, 'Fourth Wing', 56, 120, '#e2ba64', 160, 100)
 ON CONFLICT (id) DO NOTHING;

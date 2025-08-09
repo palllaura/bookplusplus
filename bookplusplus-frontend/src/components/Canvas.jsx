@@ -37,13 +37,12 @@ const Canvas = forwardRef(({ books }, ref) => {
         booksRef.current.forEach(book => {
             ctx.fillStyle = book.color;
             ctx.fillRect(book.x, book.y, book.width, book.height);
-            console.log(book.title + ' x:' + book.x + ' y:' + book.y)
 
             ctx.save();
-            ctx.translate(book.x + book.width / 2 + 8, book.y + book.height - 8);
+            ctx.translate(book.x + book.width / 2 + 5, book.y + book.height - 5);
             ctx.rotate(-Math.PI / 2);
             ctx.fillStyle = 'white';
-            ctx.font = '16px sans-serif';
+            ctx.font = '10px sans-serif';
             ctx.fillText(book.title, 0, 0);
             ctx.restore();
         })

@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #D9722C;
+  background-color: #F7E1CA;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -20,6 +20,9 @@ body {
   place-items: center;
   min-height: 100vh;
 }
+
+input:focus { outline: none; border: 2px solid #D34031; }
+
 
 
 

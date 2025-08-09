@@ -3,10 +3,12 @@ import Sidebar from "./components/Sidebar.jsx";
 import Canvas from "./components/Canvas.jsx";
 import {fetchBooks, saveBookLocations} from './services/bookService';
 import {useEffect, useRef, useState} from "react";
+import AddBookModal from "./components/AddBookModal.jsx";
 
 function App() {
     const [books, setBooks] = useState([]);
     const canvasRef = useRef(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         async function loadBooks() {
@@ -36,10 +38,16 @@ function App() {
 
     return (
         <div className="app-container">
-            <Sidebar onSave={handleSave} />
+            <Sidebar
+                onSave={handleSave}
+                onAddBook={() => setIsModalOpen(true)}
+            />
             <div className="canvas-wrapper">
                 <Canvas ref={canvasRef} books={books} />
             </div>
+            {isModalOpen && (<AddBookModal
+                onClose={() => setIsModalOpen(false)}
+            />)}
         </div>
     )
 }
