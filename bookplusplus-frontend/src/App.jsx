@@ -1,7 +1,7 @@
 import './App.css'
 import Sidebar from "./components/Sidebar.jsx";
 import Canvas from "./components/Canvas.jsx";
-import {fetchBooks, saveBookLocations} from './services/bookService';
+import {addBook, fetchBooks, saveBookLocations} from './services/bookService';
 import {useEffect, useRef, useState} from "react";
 import AddBookModal from "./components/AddBookModal.jsx";
 
@@ -10,16 +10,17 @@ function App() {
     const canvasRef = useRef(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        async function loadBooks() {
-            try {
-                const data = await fetchBooks();
-                setBooks(data);
-                console.log('Fetched books:', data);
-            } catch (error) {
-                console.error('Failed to fetch books:', error);
-            }
+    const loadBooks = async () => {
+        try {
+            const data = await fetchBooks();
+            setBooks(data);
+            console.log('Fetched books:', data);
+        } catch (error) {
+            console.error('Failed to fetch books:', error);
         }
+    };
+
+    useEffect(() => {
         loadBooks();
     }, []);
 
@@ -36,6 +37,18 @@ function App() {
         }
     };
 
+
+    const handleAddBook = async (dto) => {
+        try {
+            await addBook(dto);
+            console.log('Book added successfully');
+            await loadBooks();
+        } catch (error) {
+            console.error('Failed to save book: ', error);
+            alert('Failed to save book')
+        }
+    }
+
     return (
         <div className="app-container">
             <Sidebar
@@ -46,6 +59,7 @@ function App() {
                 <Canvas ref={canvasRef} books={books} />
             </div>
             {isModalOpen && (<AddBookModal
+                onSave={handleAddBook}
                 onClose={() => setIsModalOpen(false)}
             />)}
         </div>

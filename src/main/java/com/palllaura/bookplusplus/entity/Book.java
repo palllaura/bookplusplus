@@ -49,4 +49,27 @@ public class Book {
     @Column(name = "y")
     private int yPosition;
 
+    /**
+     * No-args constructor.
+     */
+    public Book() {
+    }
+
+    /**
+     * Book constructor.
+     * @param title Book title as string.
+     * @param bookWidthInMm Book width as int.
+     * @param bookHeightInMm Book height as int.
+     * @param color Book color as string.
+     * @param xPosition Book x position as int.
+     * @param yPosition Book y position as int.
+     */
+    public Book(String title, int bookWidthInMm, int bookHeightInMm, String color, int xPosition, int yPosition) {
+        this.title = title;
+        this.bookWidthInMm = bookWidthInMm;
+        this.bookHeightInMm = bookHeightInMm;
+        this.color = color;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+    }
 }

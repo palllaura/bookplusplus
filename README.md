@@ -3,7 +3,7 @@ A draggable 2D bookshelf
 
 ## Features
 
-* Add new books (not yet)
+* Add new books
 * Rearrange existing books by dragging them around
 * Edit existing books (not yet)
 * Delete unwanted books (not yet)

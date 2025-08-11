@@ -14,3 +14,20 @@ export async function saveBookLocations(locations) {
         throw new Error('Failed to save book locations');
     }
 }
+
+export async function addBook(dto) {
+    const response = await fetch('http://localhost:8080/api/addBook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            title: dto.title,
+            width: dto.width,
+            height: dto.height,
+            color: dto.color
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to save book');
+    }
+}

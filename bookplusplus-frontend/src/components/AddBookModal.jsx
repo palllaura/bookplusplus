@@ -3,13 +3,21 @@ import {useState} from "react";
 import save from "../assets/savebutton.png";
 import close from "../assets/close.png"
 
-export default function AddBookModal({ onClose }) {
-    const [state, setState] = useState({
-        title: "",
-        width: "",
-        height: "",
-        color: ""
-    })
+export default function AddBookModal({ onSave, onClose }) {
+    const [title, setTitle] = useState("");
+    const [width, setWidth] = useState("");
+    const [height, setHeight] = useState("");
+    const [color, setColor] = useState("");
+
+    const handleSubmit = () => {
+        const dto = createBookDto();
+        onSave(dto);
+        onClose();
+    }
+
+    function createBookDto() {
+        return {title: title,  width: width, height: height, color: color};
+    }
 
     return (
         <div className="modal-overlay">
@@ -28,7 +36,7 @@ export default function AddBookModal({ onClose }) {
                         type="text"
                         placeholder="..."
                         className="modal-input"
-                        onChange={(e) => setState({ ...state, title: e.target.value })}
+                        onChange={e => setTitle(e.target.value)}
                     />
                 </div>
 
@@ -39,7 +47,7 @@ export default function AddBookModal({ onClose }) {
                             type="number"
                             placeholder="..."
                             className="modal-input"
-                            onChange={(e) => setState({ ...state, width: e.target.value })}
+                            onChange={e => setWidth(e.target.value)}
                         />
                     </div>
 
@@ -49,7 +57,7 @@ export default function AddBookModal({ onClose }) {
                             type="number"
                             placeholder="..."
                             className="modal-input"
-                            onChange={(e) => setState({ ...state, height: e.target.value })}
+                            onChange={e => setHeight(e.target.value)}
                         />
                     </div>
                 </div>
@@ -59,7 +67,7 @@ export default function AddBookModal({ onClose }) {
                     <input
                         type="color"
                         className="color-picker"
-                        onChange={(e) => setState({ ...state, color: e.target.value })}
+                        onChange={e => setColor(e.target.value)}
                     />
                 </div>
 
@@ -67,7 +75,7 @@ export default function AddBookModal({ onClose }) {
                     <img src={save}
                          className="button"
                          alt="save button"
-                         onClick={onClose}
+                         onClick={handleSubmit}
                     />
                 </div>
             </div>
