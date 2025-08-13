@@ -4,6 +4,7 @@ import { createBook } from "../utils/createBook.js";
 
 const Canvas = forwardRef(({ books }, ref) => {
     const booksRef = useRef([]);
+    const mm = window.innerHeight / 1000;
 
     useImperativeHandle(ref, () => ({
         getCurrentBookLocations: () => {
@@ -30,8 +31,52 @@ const Canvas = forwardRef(({ books }, ref) => {
         <Stage
             width={window.innerWidth}
             height={window.innerHeight}
-            style={{ backgroundColor: '#f0f0f0' }}
+            style={{ backgroundColor: '#F7E1CA' }}
         >
+            <Layer>
+                <Rect
+                    x={100}
+                    y={10}
+                    height={900 * mm}
+                    width={20 * mm}
+                    fill={'#88664B'}
+                />
+                <Rect
+                    x={100 + 800 * mm - 20 * mm}
+                    y={10}
+                    height={900 * mm}
+                    width={20 * mm}
+                    fill={'#88664B'}
+                />
+                <Rect
+                    x={100}
+                    y={10}
+                    height={20 * mm}
+                    width={800 * mm}
+                    fill={'#88664B'}
+                />
+                <Rect
+                    x={100}
+                    y={10 + 300 * mm}
+                    height={20 * mm}
+                    width={800 * mm}
+                    fill={'#88664B'}
+                />
+                <Rect
+                    x={100}
+                    y={10 + 600 * mm}
+                    height={20 * mm}
+                    width={800 * mm}
+                    fill={'#88664B'}
+                />
+                <Rect
+                    x={100}
+                    y={10 + 900 * mm}
+                    height={40 * mm}
+                    width={800 * mm}
+                    fill={'#88664B'}
+                />
+            </Layer>
             <Layer>
                 {booksRef.current.map(book => (
                     <Group
@@ -42,20 +87,20 @@ const Canvas = forwardRef(({ books }, ref) => {
                         onDragMove={(e) => handleDragMove(e, book.id)}
                     >
                         <Rect
-                            width={book.width}
-                            height={book.height}
+                            width={book.width * mm}
+                            height={book.height * mm}
                             fill={book.color}
                             cornerRadius={2}
                         />
                         <Text
                             x={0}
-                            y={book.height - 5}
+                            y={book.height * mm - 5}
                             text={book.title}
                             fill="white"
                             fontSize={12}
                             rotation={-90}
-                            width={book.height - 10}
-                            height={book.width}
+                            width={book.height * mm - 10}
+                            height={book.width * mm}
                             verticalAlign={'middle'}
                         />
                     </Group>
