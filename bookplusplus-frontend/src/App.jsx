@@ -37,6 +37,11 @@ function App() {
         }
     };
 
+    const handleReload = async () => {
+        await loadBooks();
+        await canvasRef.current.reloadBooks(books);
+    }
+
 
     const handleAddBook = async (dto) => {
         try {
@@ -54,6 +59,7 @@ function App() {
             <Sidebar
                 onSave={handleSave}
                 onAddBook={() => setIsModalOpen(true)}
+                onReload={handleReload}
             />
             <div className="canvas-wrapper">
                 <Canvas ref={canvasRef} books={books} />

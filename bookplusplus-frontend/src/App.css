@@ -32,11 +32,7 @@
   background-color: #FBF0E5;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-}
-
-.sidebar p {
-  font-style: italic;
+  /*justify-content: space-between;*/
 }
 
 .canvas-wrapper {

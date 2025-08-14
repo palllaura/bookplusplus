@@ -1,29 +1,34 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import { Stage, Layer, Rect, Text, Group } from 'react-konva';
 import { createBook } from "../utils/createBook.js";
 
 const Canvas = forwardRef(({ books }, ref) => {
-    const booksRef = useRef([]);
+    const [drawnBooks, setDrawnBooks] = useState([]);
     const mm = window.innerHeight / 1000;
 
     useImperativeHandle(ref, () => ({
         getCurrentBookLocations: () => {
-            return booksRef.current.map(book => ({
+            return drawnBooks.map(book => ({
                 id: book.id,
-                xposition: book.x,
-                yposition: book.y
+                xposition: book.x / mm,
+                yposition: book.y / mm
             }));
+        },
+        reloadBooks: (newBooks) => {
+            setDrawnBooks(newBooks.map(book => createBook(book)));
         }
     }));
 
     useEffect(() => {
-        booksRef.current = books.map(book => createBook(book));
+        setDrawnBooks(books.map(book => createBook(book)));
     }, [books]);
 
     const handleDragMove = (e, id) => {
         const { x, y } = e.target.position();
-        booksRef.current = booksRef.current.map(book =>
-            book.id === id ? { ...book, x, y } : book
+        setDrawnBooks(prev =>
+            prev.map(book =>
+                book.id === id ? { ...book, x: x / mm, y: y / mm } : book
+            )
         );
     };
 
@@ -35,54 +40,54 @@ const Canvas = forwardRef(({ books }, ref) => {
         >
             <Layer>
                 <Rect
-                    x={100}
-                    y={10}
+                    x={100 * mm}
+                    y={10 * mm}
                     height={900 * mm}
                     width={20 * mm}
                     fill={'#88664B'}
                 />
                 <Rect
-                    x={100 + 800 * mm - 20 * mm}
-                    y={10}
+                    x={100 * mm + 800 * mm - 20 * mm}
+                    y={10 * mm}
                     height={900 * mm}
                     width={20 * mm}
                     fill={'#88664B'}
                 />
                 <Rect
-                    x={100}
-                    y={10}
+                    x={100 * mm}
+                    y={10 * mm}
                     height={20 * mm}
                     width={800 * mm}
                     fill={'#88664B'}
                 />
                 <Rect
-                    x={100}
-                    y={10 + 300 * mm}
+                    x={100 * mm}
+                    y={10 * mm + 300 * mm}
                     height={20 * mm}
                     width={800 * mm}
                     fill={'#88664B'}
                 />
                 <Rect
-                    x={100}
-                    y={10 + 600 * mm}
+                    x={100 * mm}
+                    y={10 * mm + 600 * mm}
                     height={20 * mm}
                     width={800 * mm}
                     fill={'#88664B'}
                 />
                 <Rect
-                    x={100}
-                    y={10 + 900 * mm}
+                    x={100 * mm}
+                    y={10 * mm + 900 * mm}
                     height={40 * mm}
                     width={800 * mm}
                     fill={'#88664B'}
                 />
             </Layer>
             <Layer>
-                {booksRef.current.map(book => (
+                {drawnBooks.map(book => (
                     <Group
                         key={book.id}
-                        x={book.x}
-                        y={book.y}
+                        x={book.x * mm}
+                        y={book.y * mm}
                         draggable
                         onDragMove={(e) => handleDragMove(e, book.id)}
                     >
@@ -94,12 +99,12 @@ const Canvas = forwardRef(({ books }, ref) => {
                         />
                         <Text
                             x={0}
-                            y={book.height * mm - 5}
+                            y={book.height * mm - 5 * mm}
                             text={book.title}
                             fill="white"
-                            fontSize={12}
+                            fontSize={16 * mm}
                             rotation={-90}
-                            width={book.height * mm - 10}
+                            width={book.height * mm - 10 * mm}
                             height={book.width * mm}
                             verticalAlign={'middle'}
                         />
