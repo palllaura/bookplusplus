@@ -5,9 +5,6 @@ A draggable 2D bookshelf
 
 * Add new books
 * Rearrange existing books by dragging them around
-* Edit existing books (not yet)
-* Delete unwanted books (not yet)
-* Add additional bookshelves if necessary (not yet)
 * Load initial data from an SQL file
 * Backend built with Java + Spring Boot
 * Frontend built with React + Canvas
@@ -63,5 +60,4 @@ A draggable 2D bookshelf
 4. The frontend will be available at:
    http://localhost:5173
 
-<img width="1079" height="814" alt="Screenshot 2025-08-13 at 12 06 06" src="https://github.com/user-attachments/assets/dfb9ef65-11c3-4dad-ae24-483e63e8d736" />
-
+<img width="1096" height="815" alt="Screenshot 2025-08-15 at 11 07 54" src="https://github.com/user-attachments/assets/44a25aca-0d5a-4039-af11-172ee89ecf1a" />
