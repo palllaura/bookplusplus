@@ -1,10 +1,13 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
-import { Stage, Layer, Rect, Text, Group } from 'react-konva';
-import { createBook } from "../utils/createBook.js";
+import {Stage, Layer, Rect, Text, Group, Image as KonvaImage} from 'react-konva';
+import {createBook} from "../utils/createBook.js";
+import box from "../assets/box.png";
+import useImage from 'use-image';
 
-const Canvas = forwardRef(({ books }, ref) => {
+const Canvas = forwardRef(({books}, ref) => {
     const [drawnBooks, setDrawnBooks] = useState([]);
     const mm = window.innerHeight / 1000;
+    const [boxImage] = useImage(box);
 
     useImperativeHandle(ref, () => ({
         getCurrentBookLocations: () => {
@@ -24,10 +27,10 @@ const Canvas = forwardRef(({ books }, ref) => {
     }, [books]);
 
     const handleDragMove = (e, id) => {
-        const { x, y } = e.target.position();
+        const {x, y} = e.target.position();
         setDrawnBooks(prev =>
             prev.map(book =>
-                book.id === id ? { ...book, x, y } : book
+                book.id === id ? {...book, x, y} : book
             )
         );
     };
@@ -36,7 +39,7 @@ const Canvas = forwardRef(({ books }, ref) => {
         <Stage
             width={window.innerWidth}
             height={window.innerHeight}
-            style={{ backgroundColor: '#F7E1CA' }}
+            style={{backgroundColor: '#F7E1CA'}}
         >
             <Layer>
                 <Rect
@@ -110,6 +113,19 @@ const Canvas = forwardRef(({ books }, ref) => {
                         />
                     </Group>
                 ))}
+            </Layer>
+            <Layer>
+                {boxImage && (
+                    <KonvaImage
+                        image={boxImage}
+                        x={window.innerWidth - 500 * mm}
+                        y={window.innerHeight - 250 * mm}
+                        width={200 * mm}
+                        height={200 * mm}
+                        visible={true}
+                        draggable={true}
+                    />
+                )}
             </Layer>
         </Stage>
     );
