@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import { Stage, Layer, Rect, Text, Group } from 'react-konva';
 import { createBook } from "../utils/createBook.js";
 
@@ -15,19 +15,19 @@ const Canvas = forwardRef(({ books }, ref) => {
             }));
         },
         reloadBooks: (newBooks) => {
-            setDrawnBooks(newBooks.map(book => createBook(book)));
+            setDrawnBooks(newBooks.map(book => createBook(book, mm)));
         }
     }));
 
     useEffect(() => {
-        setDrawnBooks(books.map(book => createBook(book)));
+        setDrawnBooks(books.map(book => createBook(book, mm)));
     }, [books]);
 
     const handleDragMove = (e, id) => {
         const { x, y } = e.target.position();
         setDrawnBooks(prev =>
             prev.map(book =>
-                book.id === id ? { ...book, x: x / mm, y: y / mm } : book
+                book.id === id ? { ...book, x, y } : book
             )
         );
     };
@@ -86,26 +86,26 @@ const Canvas = forwardRef(({ books }, ref) => {
                 {drawnBooks.map(book => (
                     <Group
                         key={book.id}
-                        x={book.x * mm}
-                        y={book.y * mm}
+                        x={book.x}
+                        y={book.y}
                         draggable
                         onDragMove={(e) => handleDragMove(e, book.id)}
                     >
                         <Rect
-                            width={book.width * mm}
-                            height={book.height * mm}
+                            width={book.width}
+                            height={book.height}
                             fill={book.color}
                             cornerRadius={2}
                         />
                         <Text
                             x={0}
-                            y={book.height * mm - 5 * mm}
+                            y={book.height - 5 * mm}
                             text={book.title}
                             fill="white"
                             fontSize={16 * mm}
                             rotation={-90}
-                            width={book.height * mm - 10 * mm}
-                            height={book.width * mm}
+                            width={book.height - 10 * mm}
+                            height={book.width}
                             verticalAlign={'middle'}
                         />
                     </Group>
