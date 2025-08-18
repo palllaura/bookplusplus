@@ -61,13 +61,15 @@ public class BookService {
     public boolean addNewBook(NewBookDto dto) {
         if (!validateNewBookDto(dto)) return false;
 
+        int width = calculateBookWidth(dto.getPages());
         Book newBook = new Book(
                 dto.getTitle(),
-                dto.getWidth(),
+                dto.getPages(),
+                width,
                 dto.getHeight(),
                 dto.getColor(),
-                100,
-                100
+                10,
+                10
         );
 
         try {
@@ -95,8 +97,8 @@ public class BookService {
             LOGGER.info("Book color is missing or blank");
             isValid = false;
         }
-        if (dto.getWidth() < 10 || dto.getWidth() > 3000) {
-            LOGGER.info("Book width is incorrect");
+        if (dto.getPages() < 10 || dto.getPages() > 1000) {
+            LOGGER.info("Number of pages is incorrect");
             isValid = false;
         }
         if (dto.getHeight() < 100 || dto.getHeight() > 1000) {
@@ -104,6 +106,15 @@ public class BookService {
             isValid = false;
         }
         return isValid;
+    }
+
+    /**
+     * Calculate book width from number of pages.
+     * @param pages number of pages.
+     * @return book width.
+     */
+    private int calculateBookWidth(int pages) {
+        return pages / 10;
     }
 
 }

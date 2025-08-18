@@ -5,7 +5,7 @@ import close from "../assets/close.png"
 
 export default function AddBookModal({ onSave, onClose }) {
     const [title, setTitle] = useState("");
-    const [width, setWidth] = useState("");
+    const [pages, setPages] = useState("");
     const [height, setHeight] = useState("");
     const [color, setColor] = useState("");
 
@@ -16,7 +16,7 @@ export default function AddBookModal({ onSave, onClose }) {
     }
 
     function createBookDto() {
-        return {title: title,  width: width, height: height, color: color};
+        return {title: title,  pages: pages, height: height, color: color};
     }
 
     return (
@@ -42,12 +42,12 @@ export default function AddBookModal({ onSave, onClose }) {
 
                 <div className="horizontal-input">
                     <div className="input-holder">
-                        <p className="input-tooltip">Width:</p>
+                        <p className="input-tooltip">Number of pages:</p>
                         <input
                             type="number"
                             placeholder="..."
                             className="modal-input"
-                            onChange={e => setWidth(e.target.value)}
+                            onChange={e => setPages(e.target.value)}
                         />
                     </div>
 

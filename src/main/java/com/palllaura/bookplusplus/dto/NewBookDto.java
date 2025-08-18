@@ -8,9 +8,9 @@ import lombok.Setter;
 public class NewBookDto {
     private String title;
     /**
-     * Book width in millimeters.
+     * Number of pages.
      */
-    private int width;
+    private int pages;
     /**
      * Book height in millimeters.
      */

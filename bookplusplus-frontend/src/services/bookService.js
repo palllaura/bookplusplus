@@ -21,7 +21,7 @@ export async function addBook(dto) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             title: dto.title,
-            width: dto.width,
+            pages: dto.pages,
             height: dto.height,
             color: dto.color
         }),
