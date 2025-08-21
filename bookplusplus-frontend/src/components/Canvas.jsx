@@ -26,13 +26,64 @@ const Canvas = forwardRef(({books}, ref) => {
         setDrawnBooks(books.map(book => createBook(book, mm)));
     }, [books]);
 
-    const handleDragMove = (e, id) => {
-        const {x, y} = e.target.position();
-        setDrawnBooks(prev =>
-            prev.map(book =>
-                book.id === id ? {...book, x, y} : book
-            )
+    const handleDragStart = (bookId, e) => {
+        const book = drawnBooks.find(b => b.id === bookId);
+        book.prevX = book.x;
+        book.prevY = book.y;
+    };
+
+    function isColliding(a, b) {
+        return !(
+            a.x + a.width <= b.x ||
+            a.x >= b.x + b.width ||
+            a.y + a.height <= b.y ||
+            a.y >= b.y + b.height
         );
+    }
+
+    const handleDragMove = (e, bookId) => {
+        const movingBook = drawnBooks.find(b => b.id === bookId);
+        const updatedBook = {
+            ...movingBook,
+            x: e.target.x(),
+            y: e.target.y(),
+        };
+
+        const collides = drawnBooks.some(
+            b => b.id !== bookId && isColliding(updatedBook, b)
+        );
+
+        setDrawnBooks(drawnBooks.map(b =>
+            b.id === bookId ? { ...updatedBook, isColliding: collides } : b
+        ));
+    };
+
+    const handleDragEnd = (e, bookId) => {
+        const book = drawnBooks.find(b => b.id === bookId);
+        const updatedBook = {
+            ...book,
+            x: e.target.x(),
+            y: e.target.y(),
+            prevX: book.prevX,
+            prevY: book.prevY,
+        };
+
+        const collides = drawnBooks.some(
+            b => b.id !== bookId && isColliding(updatedBook, b)
+        );
+
+        if (collides) {
+            e.target.position({ x: book.prevX, y: book.prevY });
+            updatedBook.x = book.prevX;
+            updatedBook.y = book.prevY;
+            updatedBook.isColliding = false;
+        } else {
+            updatedBook.prevX = updatedBook.x;
+            updatedBook.prevY = updatedBook.y;
+            updatedBook.isColliding = false;
+        }
+
+        setDrawnBooks(drawnBooks.map(b => b.id === bookId ? updatedBook : b));
     };
 
     return (
@@ -85,6 +136,7 @@ const Canvas = forwardRef(({books}, ref) => {
                     fill={'#88664B'}
                 />
             </Layer>
+
             <Layer>
                 {drawnBooks.map(book => (
                     <Group
@@ -92,7 +144,9 @@ const Canvas = forwardRef(({books}, ref) => {
                         x={book.x}
                         y={book.y}
                         draggable
+                        onDragStart={(e) => handleDragStart(book.id, e)}
                         onDragMove={(e) => handleDragMove(e, book.id)}
+                        onDragEnd={(e) => handleDragEnd(e, book.id)}
                     >
                         <Rect
                             width={book.width}
@@ -100,30 +154,39 @@ const Canvas = forwardRef(({books}, ref) => {
                             fill={book.color}
                             cornerRadius={2}
                         />
+                        {book.isColliding && (
+                            <Rect
+                                width={book.width}
+                                height={book.height}
+                                fill="red"
+                                opacity={0.8}
+                                cornerRadius={2}
+                            />
+                        )}
                         <Text
                             x={0}
-                            y={book.height - 5 * mm}
+                            y={book.height - 5*mm}
                             text={book.title}
                             fill="white"
-                            fontSize={16 * mm}
+                            fontSize={16*mm}
                             rotation={-90}
-                            width={book.height - 10 * mm}
+                            width={book.height - 10*mm}
                             height={book.width}
                             verticalAlign={'middle'}
                         />
                     </Group>
                 ))}
             </Layer>
+
             <Layer>
                 {boxImage && (
                     <KonvaImage
                         image={boxImage}
-                        x={window.innerWidth - 500 * mm}
-                        y={window.innerHeight - 250 * mm}
-                        width={200 * mm}
-                        height={200 * mm}
-                        visible={true}
-                        draggable={true}
+                        x={window.innerWidth - 500*mm}
+                        y={window.innerHeight - 250*mm}
+                        width={200*mm}
+                        height={200*mm}
+                        draggable
                     />
                 )}
             </Layer>
