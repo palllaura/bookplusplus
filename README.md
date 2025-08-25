@@ -60,5 +60,4 @@ A draggable 2D bookshelf
 4. The frontend will be available at:
    http://localhost:5173
 
-<img width="1095" height="804" alt="Screenshot 2025-08-18 at 12 08 27" src="https://github.com/user-attachments/assets/07295730-be42-4d2d-aae6-0d518a163268" />
-
+<img width="1182" height="817" alt="Screenshot 2025-08-25 at 13 04 05" src="https://github.com/user-attachments/assets/050afd09-9b35-4b4e-9f9e-3c56e5fd4a63" />
