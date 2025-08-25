@@ -1,5 +1,6 @@
 INSERT INTO book (id, title, pages, width, height, color, x, y)
-VALUES (1003, 'A Court of Frost and Starlight',233, 23, 200, '#00b0e1', 10, 750),
+VALUES (1004, 'A Court of Silver Flames',751, 75, 200, '#f36c24', 10, 750),
+       (1003, 'A Court of Wings and Ruin',730, 73, 200, '#c24d96', 10, 750),
        (1002, 'A Court of Wings and Ruin',730, 73, 200, '#c24d96', 10, 750),
        (1001, 'A Court of Mist and Fury', 620, 62, 200, '#01a596', 10, 750),
        (1000, 'A Court of Thorns and Roses', 420, 42, 200, '#e83c4e', 10, 750),
@@ -20,5 +21,18 @@ VALUES (1003, 'A Court of Frost and Starlight',233, 23, 200, '#00b0e1', 10, 750)
        (985, 'Paadimehe tõed', 130, 13, 150, '#fdbb1e', 10, 750),
        (984, 'Onyx Storm', 760, 76, 200, '#0b0d0c', 10, 750),
        (983, 'Iron Flame', 790, 79, 200, '#d38542', 10, 750),
-       (982, 'Fourth Wing', 560, 56, 200, '#e2ba64', 10, 750)
+       (982, 'Fourth Wing', 560, 56, 200, '#e2ba64', 10, 750),
+       (981, 'Hell Bent', 478, 47, 210, '#b0afaf', 10, 750),
+       (980, 'Ninth House', 458, 45, 210, '#020202', 10, 750),
+       (979, 'Tokyo Express', 148, 14, 180, '#649e2c', 10, 750),
+       (978, 'Miss Marple', 272, 27, 240, '#132b17', 10, 750),
+       (977, 'Vaba langemine', 168, 16, 210, '#173903', 10, 750),
+       (976, 'Rule of Wolves', 608, 60, 240, '#d5d3cd', 10, 750),
+       (975, 'King of Scars', 514, 51, 240, '#cb9139', 10, 750),
+       (974, 'Demon in the Wood', 208, 20, 210, '#575484', 10, 750),
+       (973, 'Ruin and Rising', 387, 38, 200, '#a9302d', 10, 750),
+       (972, 'Siege and Storm', 388, 38, 200, '#2fa08a', 10, 750),
+       (971, 'Shadow and Bone', 369, 36, 200, '#041e37', 10, 750),
+       (970, 'Crooked Kingdom', 544, 54, 240, '#a69247', 10, 750),
+       (969, 'Six of Crows', 494, 49, 240, '#e20333', 10, 750)
 ON CONFLICT (id) DO NOTHING;

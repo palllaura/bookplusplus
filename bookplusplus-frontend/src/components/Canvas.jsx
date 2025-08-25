@@ -8,6 +8,15 @@ const Canvas = forwardRef(({books}, ref) => {
     const [drawnBooks, setDrawnBooks] = useState([]);
     const mm = window.innerHeight / 1000;
     const [boxImage] = useImage(box);
+    const cupboardX = 100;
+    const cupboardY = 10;
+    const cupboardHeight = 960;
+    const cupboardWidth = 800;
+    const shelfHeight = 280;
+    const shelfThickness = 20;
+    const shelfWidth = cupboardWidth - 2 * shelfThickness;
+    const cupboardColor = '#88664B';
+    const shelfColor = '#604734';
 
     useImperativeHandle(ref, () => ({
         getCurrentBookLocations: () => {
@@ -94,46 +103,34 @@ const Canvas = forwardRef(({books}, ref) => {
         >
             <Layer>
                 <Rect
-                    x={100 * mm}
-                    y={10 * mm}
-                    height={900 * mm}
-                    width={20 * mm}
-                    fill={'#88664B'}
+                    x={cupboardX * mm}
+                    y={cupboardY * mm}
+                    height={cupboardHeight * mm}
+                    width={cupboardWidth * mm}
+                    fill={cupboardColor}
+                />
+            </Layer>
+            <Layer>
+                <Rect
+                    x={(cupboardX + shelfThickness) * mm}
+                    y={(cupboardY + shelfThickness) * mm}
+                    height={shelfHeight * mm}
+                    width={shelfWidth * mm}
+                    fill={shelfColor}
                 />
                 <Rect
-                    x={100 * mm + 800 * mm - 20 * mm}
-                    y={10 * mm}
-                    height={900 * mm}
-                    width={20 * mm}
-                    fill={'#88664B'}
+                    x={(cupboardX + shelfThickness) * mm}
+                    y={(cupboardY + shelfHeight + shelfThickness * 2) * mm}
+                    height={shelfHeight * mm}
+                    width={shelfWidth * mm}
+                    fill={shelfColor}
                 />
                 <Rect
-                    x={100 * mm}
-                    y={10 * mm}
-                    height={20 * mm}
-                    width={800 * mm}
-                    fill={'#88664B'}
-                />
-                <Rect
-                    x={100 * mm}
-                    y={10 * mm + 300 * mm}
-                    height={20 * mm}
-                    width={800 * mm}
-                    fill={'#88664B'}
-                />
-                <Rect
-                    x={100 * mm}
-                    y={10 * mm + 600 * mm}
-                    height={20 * mm}
-                    width={800 * mm}
-                    fill={'#88664B'}
-                />
-                <Rect
-                    x={100 * mm}
-                    y={10 * mm + 900 * mm}
-                    height={40 * mm}
-                    width={800 * mm}
-                    fill={'#88664B'}
+                    x={(cupboardX + shelfThickness) * mm}
+                    y={(cupboardY + shelfHeight * 2 + shelfThickness * 3) * mm}
+                    height={shelfHeight * mm}
+                    width={shelfWidth * mm}
+                    fill={shelfColor}
                 />
             </Layer>
 
@@ -158,7 +155,7 @@ const Canvas = forwardRef(({books}, ref) => {
                             <Rect
                                 width={book.width}
                                 height={book.height}
-                                fill="red"
+                                fill={'red'}
                                 opacity={0.8}
                                 cornerRadius={2}
                             />
