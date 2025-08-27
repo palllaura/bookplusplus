@@ -18,6 +18,31 @@ const Canvas = forwardRef(({books}, ref) => {
     const cupboardColor = '#88664B';
     const shelfColor = '#604734';
 
+    const shelves = [
+        {
+            id: "shelf1",
+            x: (cupboardX + shelfThickness) * mm,
+            y: (cupboardY + shelfThickness) * mm,
+            width: shelfWidth * mm,
+            height: shelfHeight * mm,
+        },
+        {
+            id: "shelf2",
+            x: (cupboardX + shelfThickness) * mm,
+            y: (cupboardY + shelfHeight + shelfThickness * 2) * mm,
+            width: shelfWidth * mm,
+            height: shelfHeight * mm,
+        },
+        {
+            id: "shelf3",
+            x: (cupboardX + shelfThickness) * mm,
+            y: (cupboardY + shelfHeight * 2 + shelfThickness * 3) * mm,
+            width: shelfWidth * mm,
+            height: shelfHeight * mm,
+        },
+    ];
+
+
     useImperativeHandle(ref, () => ({
         getCurrentBookLocations: () => {
             return drawnBooks.map(book => ({
@@ -50,6 +75,16 @@ const Canvas = forwardRef(({books}, ref) => {
         );
     }
 
+    function isInsideShelf(book, shelf) {
+        return (
+            book.x >= shelf.x &&
+            book.y >= shelf.y &&
+            book.x + book.width <= shelf.x + shelf.width &&
+            book.y + book.height <= shelf.y + shelf.height
+        );
+    }
+
+
     const handleDragMove = (e, bookId) => {
         const movingBook = drawnBooks.find(b => b.id === bookId);
         const updatedBook = {
@@ -61,9 +96,11 @@ const Canvas = forwardRef(({books}, ref) => {
         const collides = drawnBooks.some(
             b => b.id !== bookId && isColliding(updatedBook, b)
         );
+        const insideAnyShelf = shelves.some(shelf => isInsideShelf(updatedBook, shelf));
+        const incorrectPlacement = collides || !insideAnyShelf;
 
         setDrawnBooks(drawnBooks.map(b =>
-            b.id === bookId ? { ...updatedBook, isColliding: collides } : b
+            b.id === bookId ? { ...updatedBook, isColliding: incorrectPlacement } : b
         ));
     };
 
@@ -77,11 +114,13 @@ const Canvas = forwardRef(({books}, ref) => {
             prevY: book.prevY,
         };
 
-        const collides = drawnBooks.some(
+        const collidesWithBook = drawnBooks.some(
             b => b.id !== bookId && isColliding(updatedBook, b)
         );
 
-        if (collides) {
+        const insideAnyShelf = shelves.some(shelf => isInsideShelf(updatedBook, shelf));
+
+        if (collidesWithBook || !insideAnyShelf) {
             e.target.position({ x: book.prevX, y: book.prevY });
             updatedBook.x = book.prevX;
             updatedBook.y = book.prevY;
@@ -94,6 +133,7 @@ const Canvas = forwardRef(({books}, ref) => {
 
         setDrawnBooks(drawnBooks.map(b => b.id === bookId ? updatedBook : b));
     };
+
 
     return (
         <Stage
@@ -111,29 +151,17 @@ const Canvas = forwardRef(({books}, ref) => {
                 />
             </Layer>
             <Layer>
-                <Rect
-                    x={(cupboardX + shelfThickness) * mm}
-                    y={(cupboardY + shelfThickness) * mm}
-                    height={shelfHeight * mm}
-                    width={shelfWidth * mm}
-                    fill={shelfColor}
-                />
-                <Rect
-                    x={(cupboardX + shelfThickness) * mm}
-                    y={(cupboardY + shelfHeight + shelfThickness * 2) * mm}
-                    height={shelfHeight * mm}
-                    width={shelfWidth * mm}
-                    fill={shelfColor}
-                />
-                <Rect
-                    x={(cupboardX + shelfThickness) * mm}
-                    y={(cupboardY + shelfHeight * 2 + shelfThickness * 3) * mm}
-                    height={shelfHeight * mm}
-                    width={shelfWidth * mm}
-                    fill={shelfColor}
-                />
+                {shelves.map(shelf => (
+                    <Rect
+                        key={shelf.id}
+                        x={shelf.x}
+                        y={shelf.y}
+                        width={shelf.width}
+                        height={shelf.height}
+                        fill={shelfColor}
+                    />
+                ))}
             </Layer>
-
             <Layer>
                 {drawnBooks.map(book => (
                     <Group
