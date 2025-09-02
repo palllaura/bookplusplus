@@ -4,16 +4,17 @@ import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.NewBookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class BookService {
-    private static final Logger LOGGER = Logger.getLogger(BookService.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
     private final BookRepository repository;
 
     /**
@@ -42,7 +43,8 @@ public class BookService {
         for (BookLocationDto dto : locations) {
             Optional<Book> bookOptional = repository.findById(dto.getId());
             if (bookOptional.isEmpty()) {
-                LOGGER.warning("Failed to update book with ID: " + dto.getId() + ", book not found");
+                String message = String.format("Failed to update book with ID: %1$s , book not found", dto.getId());
+                LOGGER.warn(message);
                 continue;
             }
             Book book = bookOptional.get();
@@ -74,10 +76,12 @@ public class BookService {
 
         try {
             repository.save(newBook);
-            LOGGER.info("Saved new book: " + newBook.getTitle());
+            String message = String.format("Saved new book: %1$s", newBook.getTitle());
+            LOGGER.info(message);
             return true;
         } catch (Exception e) {
-            LOGGER.warning("Exception while saving book: " + e.getMessage());
+            String message = String.format("Exception while saving book:: %1$s", e.getMessage());
+            LOGGER.warn(message);
             return false;
         }
     }
