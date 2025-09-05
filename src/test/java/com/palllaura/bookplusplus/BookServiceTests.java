@@ -1,6 +1,7 @@
 package com.palllaura.bookplusplus;
 
 import com.palllaura.bookplusplus.dto.BookLocationDto;
+import com.palllaura.bookplusplus.dto.NewBookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import com.palllaura.bookplusplus.service.BookService;
@@ -8,6 +9,7 @@ import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +49,19 @@ class BookServiceTests {
 		dto.setId(1L);
 		dto.setXPosition(5);
 		dto.setYPosition(15);
+		return dto;
+	}
+
+	/**
+	 * Helper method to create a new book dto.
+	 * @return dto.
+	 */
+	NewBookDto createNewBookDto() {
+		NewBookDto dto = new NewBookDto();
+		dto.setTitle("Six of Crows");
+		dto.setPages(494);
+		dto.setHeight(240);
+		dto.setColor("#e20333");
 		return dto;
 	}
 
@@ -97,6 +112,91 @@ class BookServiceTests {
 						.anyMatch(msg -> msg.contains("Failed to update book with ID: 1")),
 				"Expected warning log was not found"
 		);
+	}
+
+	@Test
+	void testAddNewBookCorrectTriggersSaveInRepository() {
+		NewBookDto dto = createNewBookDto();
+		service.addNewBook(dto);
+		verify(repository, times(1)).save(any(Book.class));
+	}
+
+	@Test
+	void testAddNewBookSavedBookHasCorrectTitle() {
+		NewBookDto dto = createNewBookDto();
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.addNewBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		Assertions.assertEquals(dto.getTitle(), savedBook.getTitle());
+	}
+
+	@Test
+	void testAddNewBookSavedBookHasCorrectColor() {
+		NewBookDto dto = createNewBookDto();
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.addNewBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		Assertions.assertEquals(dto.getColor(), savedBook.getColor());
+	}
+
+	@Test
+	void testAddNewBookSavedBookHasCorrectWidth() {
+		NewBookDto dto = createNewBookDto();
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.addNewBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		int correctWidth = dto.getPages() / 10;
+		Assertions.assertEquals(correctWidth, savedBook.getBookWidthInMm());
+	}
+
+	@Test
+	void testAddNewBookSavedBookHasCorrectInitialPosition() {
+		NewBookDto dto = createNewBookDto();
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.addNewBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		Assertions.assertEquals(10, savedBook.getXPosition());
+		Assertions.assertEquals(10, savedBook.getYPosition());
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfTitleIsBlank() {
+		NewBookDto dto = createNewBookDto();
+		dto.setTitle(" ");
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfColorIsMissing() {
+		NewBookDto dto = createNewBookDto();
+		dto.setColor(null);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfNumberOfPagesIsNegative() {
+		NewBookDto dto = createNewBookDto();
+		dto.setPages(-5);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfHeightIsIncorrect() {
+		NewBookDto dto = createNewBookDto();
+		dto.setHeight(-5);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
 	}
 
 }
