@@ -25,6 +25,7 @@ const Canvas = forwardRef(({books}, ref) => {
             y: (cupboardY + shelfThickness) * mm,
             width: shelfWidth * mm,
             height: shelfHeight * mm,
+            bottom: (cupboardY + shelfThickness + shelfHeight) * mm
         },
         {
             id: "shelf2",
@@ -32,6 +33,7 @@ const Canvas = forwardRef(({books}, ref) => {
             y: (cupboardY + shelfHeight + shelfThickness * 2) * mm,
             width: shelfWidth * mm,
             height: shelfHeight * mm,
+            bottom: (cupboardY + shelfHeight * 2 + shelfThickness * 2) * mm
         },
         {
             id: "shelf3",
@@ -39,7 +41,8 @@ const Canvas = forwardRef(({books}, ref) => {
             y: (cupboardY + shelfHeight * 2 + shelfThickness * 3) * mm,
             width: shelfWidth * mm,
             height: shelfHeight * mm,
-        },
+            bottom: (cupboardY + shelfHeight * 3 + shelfThickness * 3) * mm
+        }
     ];
 
 
@@ -109,10 +112,13 @@ const Canvas = forwardRef(({books}, ref) => {
 
     const handleDragEnd = (e, bookId) => {
         const book = drawnBooks.find(b => b.id === bookId);
+        let newX = e.target.x();
+        let newY = e.target.y();
+
         const updatedBook = {
             ...book,
-            x: e.target.x(),
-            y: e.target.y(),
+            x: newX,
+            y: newY,
             prevX: book.prevX,
             prevY: book.prevY,
         };
@@ -121,19 +127,21 @@ const Canvas = forwardRef(({books}, ref) => {
             b => b.id !== bookId && isColliding(updatedBook, b)
         );
 
-        const insideAnyShelf = shelves.some(shelf => isInsideShelf(updatedBook, shelf));
+        const insideShelf = shelves.find(shelf => isInsideShelf(updatedBook, shelf));
 
-        if (collidesWithBook || !insideAnyShelf) {
+        if (collidesWithBook || !insideShelf) {
             e.target.position({ x: book.prevX, y: book.prevY });
             updatedBook.x = book.prevX;
             updatedBook.y = book.prevY;
-            updatedBook.isColliding = false;
         } else {
+            updatedBook.y = insideShelf.bottom - book.height;
+            e.target.position({ x: newX, y: updatedBook.y });
+
             updatedBook.prevX = updatedBook.x;
             updatedBook.prevY = updatedBook.y;
-            updatedBook.isColliding = false;
         }
 
+        updatedBook.isColliding = false;
         setDrawnBooks(drawnBooks.map(b => b.id === bookId ? updatedBook : b));
     };
 
