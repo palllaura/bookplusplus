@@ -64,6 +64,9 @@ const Canvas = forwardRef(({books}, ref) => {
         const book = drawnBooks.find(b => b.id === bookId);
         book.prevX = book.x;
         book.prevY = book.y;
+
+        e.target.moveToTop();
+        e.target.getLayer().batchDraw();
     };
 
     function isColliding(a, b) {
