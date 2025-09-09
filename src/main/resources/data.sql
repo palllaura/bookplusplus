@@ -1,7 +1,10 @@
 INSERT INTO book (id, title, pages, width, height, color, x, y)
-VALUES (1004, 'A Court of Silver Flames',751, 75, 200, '#f36c24', 10, 750),
-       (1003, 'A Court of Wings and Ruin',730, 73, 200, '#c24d96', 10, 750),
-       (1002, 'A Court of Wings and Ruin',730, 73, 200, '#c24d96', 10, 750),
+VALUES (1007, 'The Assassins Blade', 434, 43, 200, '#3dbd96', 10, 750),
+       (1006, 'Crown of Midnight', 418, 41, 200, '#821b52', 10, 750),
+       (1005, 'Throne of Glass', 403, 40, 200, '#fae804', 10, 750),
+       (1004, 'A Court of Silver Flames', 751, 75, 200, '#f36c24', 10, 750),
+       (1003, 'A Court of Frost and Starlight', 233, 23, 200, '#00b0e1', 10, 750),
+       (1002, 'A Court of Wings and Ruin', 730, 73, 200, '#c24d96', 10, 750),
        (1001, 'A Court of Mist and Fury', 620, 62, 200, '#01a596', 10, 750),
        (1000, 'A Court of Thorns and Roses', 420, 42, 200, '#e83c4e', 10, 750),
        (999, 'A Curse for True Love', 390, 39, 240, '#070101', 10, 750),
