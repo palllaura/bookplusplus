@@ -23,6 +23,7 @@ export async function addBook(dto) {
             title: dto.title,
             pages: dto.pages,
             height: dto.height,
+            fontsize: dto.fontsize,
             color: dto.color
         }),
     });

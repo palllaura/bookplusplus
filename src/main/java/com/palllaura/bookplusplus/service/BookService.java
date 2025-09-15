@@ -69,6 +69,7 @@ public class BookService {
                 dto.getPages(),
                 width,
                 dto.getHeight(),
+                dto.getFontsize(),
                 dto.getColor(),
                 10,
                 10

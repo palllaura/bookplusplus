@@ -16,6 +16,10 @@ public class NewBookDto {
      */
     private int height;
     /**
+     * Font size for display.
+     */
+    private int fontsize;
+    /**
      * Color code of book.
      */
     private String color;
