@@ -203,7 +203,7 @@ const Canvas = forwardRef(({books}, ref) => {
                             x={0}
                             y={book.height - 5*mm}
                             text={book.title}
-                            fill="white"
+                            fill={book.fontcolor}
                             fontSize={book.fontsize}
                             rotation={-90}
                             width={book.height - 10*mm}

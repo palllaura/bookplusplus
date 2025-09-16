@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
 import {Stage, Layer, Rect, Text} from 'react-konva';
 
-const Canvas = forwardRef(({title, pages, height, fontsize, color}) => {
+const Canvas = forwardRef(({title, pages, height, fontsize, color, fontcolor}) => {
     const mm = window.innerHeight / 1000;
 
     const bookTitle = title ? title : 'Book Title';
@@ -9,6 +9,7 @@ const Canvas = forwardRef(({title, pages, height, fontsize, color}) => {
     const bookHeight = height ? height * mm : 240 * mm;
     const bookFontsize = fontsize ? fontsize * mm : 16 * mm;
     const bookColor = color ? color : 'black';
+    const bookFontColor = fontcolor ? fontcolor : 'white';
 
     return (
         <Stage
@@ -26,7 +27,7 @@ const Canvas = forwardRef(({title, pages, height, fontsize, color}) => {
                     x={0}
                     y={bookHeight - 5*mm}
                     text={bookTitle}
-                    fill="white"
+                    fill={bookFontColor}
                     fontSize={bookFontsize}
                     rotation={-90}
                     width={bookHeight - 10*mm}

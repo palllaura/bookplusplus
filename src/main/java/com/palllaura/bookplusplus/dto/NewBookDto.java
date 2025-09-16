@@ -23,5 +23,9 @@ public class NewBookDto {
      * Color code of book.
      */
     private String color;
+    /**
+     * Color code of book title.
+     */
+    private String fontcolor;
 
 }

@@ -71,6 +71,7 @@ public class BookService {
                 dto.getHeight(),
                 dto.getFontsize(),
                 dto.getColor(),
+                dto.getFontcolor(),
                 10,
                 10
         );
@@ -102,8 +103,16 @@ public class BookService {
             LOGGER.info("Book color is missing or blank");
             isValid = false;
         }
+        if (dto.getFontcolor() == null || dto.getFontcolor().isBlank()) {
+            LOGGER.info("Book title color is missing or blank");
+            isValid = false;
+        }
         if (dto.getPages() < 10 || dto.getPages() > 1000) {
             LOGGER.info("Number of pages is incorrect");
+            isValid = false;
+        }
+        if (dto.getFontsize() < 2 || dto.getFontsize() > 100) {
+            LOGGER.info("Font size is incorrect");
             isValid = false;
         }
         if (dto.getHeight() < 100 || dto.getHeight() > 1000) {

@@ -10,6 +10,7 @@ export default function AddBookModal({ onSave, onClose }) {
     const [height, setHeight] = useState("");
     const [fontsize, setFontsize] = useState("");
     const [color, setColor] = useState("");
+    const [fontcolor, setFontcolor] = useState("");
 
     const canvasRef = useRef(null);
 
@@ -20,7 +21,7 @@ export default function AddBookModal({ onSave, onClose }) {
     }
 
     function createBookDto() {
-        return {title: title,  pages: pages, height: height, fontsize: fontsize, color: color};
+        return {title: title,  pages: pages, height: height, fontsize: fontsize, color: color, fontcolor: fontcolor};
     }
 
     return (
@@ -86,10 +87,19 @@ export default function AddBookModal({ onSave, onClose }) {
                             />
                         </div>
 
+                        <div className="input-holder">
+                            <p className="input-tooltip">Pick book title color:</p>
+                            <input
+                                type="color"
+                                className="color-picker"
+                                onChange={e => setFontcolor(e.target.value)}
+                            />
+                        </div>
+
                     </div>
                     <div className="book-preview">
                         <Canvas ref={canvasRef}
-                        title={title} pages={pages} height={height} fontsize={fontsize} color={color}
+                        title={title} pages={pages} height={height} fontsize={fontsize} color={color} fontcolor={fontcolor}
                         />
                     </div>
                 </div>

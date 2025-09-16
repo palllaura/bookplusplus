@@ -51,6 +51,11 @@ public class Book {
     @Column(name = "color")
     private String color;
     /**
+     * Color code of book title.
+     */
+    @Column(name = "fontcolor")
+    private String fontcolor;
+    /**
      * X coordinate of book position.
      */
     @Column(name = "x")
@@ -75,10 +80,12 @@ public class Book {
      * @param bookHeightInMm Book height as int.
      * @param fontsize font size.
      * @param color Book color as string.
+     * @param fontcolor Book title color.
      * @param xPosition Book x position as int.
      * @param yPosition Book y position as int.
      */
-    public Book(String title, int pages, int bookWidthInMm, int bookHeightInMm, int fontsize, String color,
+    public Book(String title, int pages, int bookWidthInMm, int bookHeightInMm, int fontsize,
+                String color, String fontcolor,
                 int xPosition, int yPosition) {
         this.title = title;
         this.pages = pages;
@@ -86,6 +93,7 @@ public class Book {
         this.bookHeightInMm = bookHeightInMm;
         this.fontsize = fontsize;
         this.color = color;
+        this.fontcolor = fontcolor;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
     }

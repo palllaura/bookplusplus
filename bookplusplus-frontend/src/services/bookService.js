@@ -24,7 +24,8 @@ export async function addBook(dto) {
             pages: dto.pages,
             height: dto.height,
             fontsize: dto.fontsize,
-            color: dto.color
+            color: dto.color,
+            fontcolor: dto.fontcolor
         }),
     });
 
