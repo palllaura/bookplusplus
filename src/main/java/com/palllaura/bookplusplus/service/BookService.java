@@ -4,6 +4,7 @@ import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.NewBookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,19 @@ public class BookService {
      */
     public List<Book> getAllBooks() {
         return repository.findAll();
+    }
+
+    /**
+     * Find book by id.
+     * @param id id of book.
+     * @return optional of book.
+     */
+    public Book getBookById(Long id) {
+        Optional<Book> bookOptional = repository.findById(id);
+        if (bookOptional.isEmpty()) {
+            throw new EntityNotFoundException("Book with id " + id + " not found");
+        }
+        return bookOptional.get();
     }
 
     /**

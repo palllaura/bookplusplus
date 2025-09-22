@@ -37,6 +37,15 @@ public class BookController {
     }
 
     /**
+     * Get book by id.
+     * @param id id of book.
+     * @return book.
+     */
+    public Book getBookById(Long id) {
+        return service.getBookById(id);
+    }
+
+    /**
      * Update locations for all given books.
      * @param locations List of DTOs with new locations.
      */
