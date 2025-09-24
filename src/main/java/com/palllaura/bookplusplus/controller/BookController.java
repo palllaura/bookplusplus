@@ -1,11 +1,12 @@
 package com.palllaura.bookplusplus.controller;
 
 import com.palllaura.bookplusplus.dto.BookLocationDto;
-import com.palllaura.bookplusplus.dto.NewBookDto;
+import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,8 @@ public class BookController {
      * @param id id of book.
      * @return book.
      */
-    public Book getBookById(Long id) {
+    @GetMapping("/fetchBook/{id}")
+    public Book getBookById(@PathVariable Long id) {
         return service.getBookById(id);
     }
 
@@ -60,7 +62,7 @@ public class BookController {
      * @return response entity with result message.
      */
     @PostMapping("/addBook")
-    public ResponseEntity<?> addBook(@RequestBody NewBookDto dto) {
+    public ResponseEntity<?> addBook(@RequestBody BookDto dto) {
         if (service.addNewBook(dto)) {
             return ResponseEntity.ok(Map.of(
                     "message", "Book added successfully"
@@ -68,6 +70,24 @@ public class BookController {
         } else {
             return ResponseEntity.badRequest().body(Map.of(
                     "message", "Failed to save book"
+            ));
+        }
+    }
+
+    /**
+     * Edit existing book.
+     * @param dto dto with book data.
+     * @return response entity with result message.
+     */
+    @PostMapping("/editBook")
+    public ResponseEntity<?> editLocation(@RequestBody BookDto dto) {
+        if (service.editBook(dto)) {
+            return ResponseEntity.ok(Map.of(
+                    "message", "Book edited successfully!"
+            ));
+        } else {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "message", "Failed to edit book."
             ));
         }
     }

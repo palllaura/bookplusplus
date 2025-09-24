@@ -1,7 +1,7 @@
 package com.palllaura.bookplusplus;
 
 import com.palllaura.bookplusplus.dto.BookLocationDto;
-import com.palllaura.bookplusplus.dto.NewBookDto;
+import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import com.palllaura.bookplusplus.service.BookService;
@@ -56,8 +56,8 @@ class BookServiceTests {
 	 * Helper method to create a new book dto.
 	 * @return dto.
 	 */
-	NewBookDto createNewBookDto() {
-		NewBookDto dto = new NewBookDto();
+	BookDto createNewBookDto() {
+		BookDto dto = new BookDto();
 		dto.setTitle("Six of Crows");
 		dto.setPages(494);
 		dto.setHeight(240);
@@ -116,14 +116,14 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookCorrectTriggersSaveInRepository() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(any(Book.class));
 	}
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectTitle() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -134,7 +134,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectColor() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -145,7 +145,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectWidth() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -157,7 +157,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectInitialPosition() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -169,7 +169,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfTitleIsBlank() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		dto.setTitle(" ");
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -177,7 +177,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfColorIsMissing() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		dto.setColor(null);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -185,7 +185,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfNumberOfPagesIsNegative() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		dto.setPages(-5);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -193,7 +193,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfHeightIsIncorrect() {
-		NewBookDto dto = createNewBookDto();
+		BookDto dto = createNewBookDto();
 		dto.setHeight(-5);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);

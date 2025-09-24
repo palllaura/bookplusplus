@@ -1,7 +1,7 @@
 package com.palllaura.bookplusplus.service;
 
 import com.palllaura.bookplusplus.dto.BookLocationDto;
-import com.palllaura.bookplusplus.dto.NewBookDto;
+import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -74,8 +74,8 @@ public class BookService {
      * @param dto book data.
      * @return true if book was saved, else false.
      */
-    public boolean addNewBook(NewBookDto dto) {
-        if (!validateNewBookDto(dto)) return false;
+    public boolean addNewBook(BookDto dto) {
+        if (!validateBookDto(dto)) return false;
 
         int width = calculateBookWidth(dto.getPages());
         Book newBook = new Book(
@@ -103,11 +103,47 @@ public class BookService {
     }
 
     /**
+     * Edit book if all fields are valid.
+     * @param dto book data.
+     * @return true if book was edited, else false.
+     */
+    public boolean editBook(BookDto dto) {
+        if (!validateBookDto(dto)) return false;
+
+        Optional<Book> bookOptional = repository.findById(dto.getId());
+        if (bookOptional.isEmpty()) {
+            String message = String.format("Book with id %1$s not found", dto.getId());
+            LOGGER.warn(message);
+            return false;
+        }
+
+        Book book = bookOptional.get();
+        book.setTitle(dto.getTitle());
+        book.setPages(dto.getPages());
+        book.setBookWidthInMm(calculateBookWidth(dto.getPages()));
+        book.setBookHeightInMm(dto.getHeight());
+        book.setFontsize(dto.getFontsize());
+        book.setColor(dto.getColor());
+        book.setFontcolor(dto.getFontcolor());
+
+        try {
+            repository.save(book);
+            String message = String.format("Successfully edited book: %1$s", book.getTitle());
+            LOGGER.info(message);
+            return true;
+        } catch (Exception e) {
+            String message = String.format("Exception while editing book:: %1$s", e.getMessage());
+            LOGGER.warn(message);
+            return false;
+        }
+    }
+
+    /**
      * Validate new book fields.
      * @param dto new book data.
      * @return true if all fields are valid, else false.
      */
-    private boolean validateNewBookDto(NewBookDto dto) {
+    private boolean validateBookDto(BookDto dto) {
         boolean isValid = true;
         if (dto.getTitle() == null || dto.getTitle().isBlank()) {
             LOGGER.info("Book title is missing or blank");
