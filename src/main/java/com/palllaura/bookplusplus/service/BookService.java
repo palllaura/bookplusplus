@@ -57,8 +57,7 @@ public class BookService {
         for (BookLocationDto dto : locations) {
             Optional<Book> bookOptional = repository.findById(dto.getId());
             if (bookOptional.isEmpty()) {
-                String message = String.format("Failed to update book with ID: %1$s , book not found", dto.getId());
-                LOGGER.warn(message);
+                LOGGER.warn("Failed to update book with ID: {}, book not found", dto.getId());
                 continue;
             }
             Book book = bookOptional.get();
@@ -92,12 +91,10 @@ public class BookService {
 
         try {
             repository.save(newBook);
-            String message = String.format("Saved new book: %1$s", newBook.getTitle());
-            LOGGER.info(message);
+            LOGGER.info("Saved new book: {}", newBook.getTitle());
             return true;
         } catch (Exception e) {
-            String message = String.format("Exception while saving book:: %1$s", e.getMessage());
-            LOGGER.warn(message);
+            LOGGER.warn("Exception while saving book: {}", e.getMessage());
             return false;
         }
     }
@@ -112,8 +109,7 @@ public class BookService {
 
         Optional<Book> bookOptional = repository.findById(dto.getId());
         if (bookOptional.isEmpty()) {
-            String message = String.format("Book with id %1$s not found", dto.getId());
-            LOGGER.warn(message);
+            LOGGER.warn("Failed to edit book with ID: {}, book not found", dto.getId());
             return false;
         }
 
@@ -128,12 +124,10 @@ public class BookService {
 
         try {
             repository.save(book);
-            String message = String.format("Successfully edited book: %1$s", book.getTitle());
-            LOGGER.info(message);
+            LOGGER.info("Successfully edited book: {}", book.getTitle());
             return true;
         } catch (Exception e) {
-            String message = String.format("Exception while editing book:: %1$s", e.getMessage());
-            LOGGER.warn(message);
+            LOGGER.warn("Failed to update book with ID: {}", dto.getId());
             return false;
         }
     }
@@ -158,15 +152,15 @@ public class BookService {
             isValid = false;
         }
         if (dto.getPages() < 10 || dto.getPages() > 1000) {
-            LOGGER.info("Number of pages is incorrect");
+            LOGGER.info("Number of pages is incorrect: {}", dto.getPages());
             isValid = false;
         }
         if (dto.getFontsize() < 2 || dto.getFontsize() > 100) {
-            LOGGER.info("Font size is incorrect");
+            LOGGER.info("Font size is incorrect: {}", dto.getFontsize());
             isValid = false;
         }
         if (dto.getHeight() < 100 || dto.getHeight() > 1000) {
-            LOGGER.info("Book height is incorrect");
+            LOGGER.info("Book height is incorrect: {}", dto.getHeight());
             isValid = false;
         }
         return isValid;
