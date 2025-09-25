@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class BookServiceTests {
@@ -78,6 +79,18 @@ class BookServiceTests {
 	}
 
 	@Test
+	void testUpdateBookLocationsDoesntTriggerRepositoryWhenLocationsIsNull() {
+		service.updateBookLocations(null);
+		verifyNoInteractions(repository);
+	}
+
+	@Test
+	void testUpdateBookLocationsDoesntTriggerRepositoryWhenLocationsIsEmpty() {
+		service.updateBookLocations(List.of());
+		verifyNoInteractions(repository);
+	}
+
+	@Test
 	void testUpdateBookLocationsCorrectTriggersCorrectMethodInRepository() {
 		BookLocationDto dto = createBookLocationDto();
 		Book book = createBook();
@@ -93,7 +106,7 @@ class BookServiceTests {
 		BookLocationDto dto = createBookLocationDto();
 		Book book = createBook();
 
-		when(repository.findById(1L)).thenReturn(Optional.ofNullable(book));
+		when(repository.findAllById(List.of(1L))).thenReturn(List.of(book));
 		service.updateBookLocations(List.of(dto));
 
 		Assertions.assertEquals(5, book.getXPosition());
@@ -103,7 +116,7 @@ class BookServiceTests {
 	@Test
 	void testUpdateBookLocationsBookNotFoundCorrectWarning() {
 		BookLocationDto dto = createBookLocationDto();
-		when(repository.findById(1L)).thenReturn(Optional.empty());
+		when(repository.findAllById(List.of(1L))).thenReturn(List.of());
 
 		service.updateBookLocations(List.of(dto));
 
