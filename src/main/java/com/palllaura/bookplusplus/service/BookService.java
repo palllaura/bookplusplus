@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -52,19 +56,25 @@ public class BookService {
      * @param locations List of book location DTOs.
      */
     public void updateBookLocations(List<BookLocationDto> locations) {
-        List<Book> booksToSave = new ArrayList<>();
+        if (locations == null || locations.isEmpty()) return;
 
-        for (BookLocationDto dto : locations) {
-            Optional<Book> bookOptional = repository.findById(dto.getId());
-            if (bookOptional.isEmpty()) {
-                LOGGER.warn("Failed to update book with ID: {}, book not found", dto.getId());
-                continue;
-            }
-            Book book = bookOptional.get();
+        Map<Long, BookLocationDto> locationDtoMap = locations.stream()
+                .collect(Collectors.toMap(BookLocationDto::getId, Function.identity()));
+
+        List<Long> ids = new ArrayList<>(locationDtoMap.keySet());
+
+        List<Book> booksToSave = repository.findAllById(ids);
+
+        booksToSave.forEach(book -> {
+            BookLocationDto dto = locationDtoMap.get(book.getId());
             book.setXPosition(dto.getXPosition());
             book.setYPosition(dto.getYPosition());
-            booksToSave.add(book);
-        }
+        });
+
+        Set<Long> foundIds = booksToSave.stream().map(Book::getId).collect(Collectors.toSet());
+        locationDtoMap.keySet().stream()
+                .filter(id -> !foundIds.contains(id))
+                .forEach(id -> LOGGER.warn("Failed to update book with ID: {} , book not found", id));
         repository.saveAll(booksToSave);
     }
 
