@@ -5,7 +5,7 @@ import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import com.palllaura.bookplusplus.service.BookService;
-import com.sun.jdi.IntegerValue;
+import jakarta.persistence.EntityNotFoundException;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,12 +34,6 @@ class BookServiceTests {
 		service = new BookService(repository);
 		logCaptor = LogCaptor.forClass(BookService.class);
 
-	}
-
-	@Test
-	void testGetAllBooksTriggersCorrectMethodInRepository() {
-		service.getAllBooks();
-		verify(repository, times(1)).findAll();
 	}
 
 	/**
@@ -79,6 +73,26 @@ class BookServiceTests {
 		book.setXPosition(10);
 		book.setYPosition(100);
 		return book;
+	}
+
+	@Test
+	void testGetAllBooksTriggersCorrectMethodInRepository() {
+		service.getAllBooks();
+		verify(repository, times(1)).findAll();
+	}
+
+	@Test
+	void testGetBookByIdReturnsCorrectBook() {
+		Book book = createBook();
+		when(repository.findById(1L)).thenReturn(Optional.of(book));
+		Book result = service.getBookById(1L);
+		Assertions.assertEquals(result, book);
+	}
+
+	@Test
+	void testGetBookByIdThrowsExceptionWhenIdNotFound() {
+		when(repository.findById(1L)).thenReturn(Optional.empty());
+		Assertions.assertThrows(EntityNotFoundException.class, () -> service.getBookById(1L));
 	}
 
 	@Test
