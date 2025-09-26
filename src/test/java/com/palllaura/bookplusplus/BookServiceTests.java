@@ -5,6 +5,7 @@ import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import com.palllaura.bookplusplus.service.BookService;
+import com.sun.jdi.IntegerValue;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -191,9 +192,41 @@ class BookServiceTests {
 	}
 
 	@Test
+	void testAddNewBookValidationFailsIfTitleIsMissing() {
+		BookDto dto = createNewBookDto();
+		dto.setTitle(null);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
 	void testAddNewBookValidationFailsIfColorIsMissing() {
 		BookDto dto = createNewBookDto();
 		dto.setColor(null);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfColorIsBlank() {
+		BookDto dto = createNewBookDto();
+		dto.setColor(" ");
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfFontColorIsMissing() {
+		BookDto dto = createNewBookDto();
+		dto.setFontcolor(null);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfFontColorIsBlank() {
+		BookDto dto = createNewBookDto();
+		dto.setFontcolor("       ");
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
 	}
@@ -207,9 +240,41 @@ class BookServiceTests {
 	}
 
 	@Test
-	void testAddNewBookValidationFailsIfHeightIsIncorrect() {
+	void testAddNewBookValidationFailsIfNumberOfPagesIsTooLarge() {
+		BookDto dto = createNewBookDto();
+		dto.setPages(Integer.MAX_VALUE);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfFontSizeIsNegative() {
+		BookDto dto = createNewBookDto();
+		dto.setFontsize(-5);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfFontSizeIsTooLarge() {
+		BookDto dto = createNewBookDto();
+		dto.setFontsize(Integer.MAX_VALUE);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfHeightIsNegative() {
 		BookDto dto = createNewBookDto();
 		dto.setHeight(-5);
+		boolean result = service.addNewBook(dto);
+		Assertions.assertFalse(result);
+	}
+
+	@Test
+	void testAddNewBookValidationFailsIfHeightIsTooLarge() {
+		BookDto dto = createNewBookDto();
+		dto.setHeight(Integer.MAX_VALUE);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
 	}
