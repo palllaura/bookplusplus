@@ -5,6 +5,7 @@ import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class BookService {
      * Try to update locations for all given books.
      * @param locations List of book location DTOs.
      */
+    @Transactional
     public void updateBookLocations(List<BookLocationDto> locations) {
         if (locations == null || locations.isEmpty()) return;
 
@@ -83,14 +85,14 @@ public class BookService {
      * @param dto book data.
      * @return true if book was saved, else false.
      */
+    @Transactional
     public boolean addNewBook(BookDto dto) {
         if (!validateBookDto(dto)) return false;
 
-        int width = calculateBookWidth(dto.getPages());
         Book newBook = new Book(
                 dto.getTitle(),
                 dto.getPages(),
-                width,
+                calculateBookWidth(dto.getPages()),
                 dto.getHeight(),
                 dto.getFontsize(),
                 dto.getColor(),
@@ -114,6 +116,7 @@ public class BookService {
      * @param dto book data.
      * @return true if book was edited, else false.
      */
+    @Transactional
     public boolean editBook(BookDto dto) {
         if (!validateBookDto(dto)) return false;
 
