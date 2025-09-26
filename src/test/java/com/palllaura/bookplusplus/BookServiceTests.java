@@ -63,6 +63,8 @@ class BookServiceTests {
 		dto.setPages(494);
 		dto.setHeight(240);
 		dto.setColor("#e20333");
+		dto.setFontcolor("#ffffff");
+		dto.setFontsize(16);
 		return dto;
 	}
 
