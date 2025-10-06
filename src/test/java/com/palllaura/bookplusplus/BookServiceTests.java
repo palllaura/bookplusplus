@@ -10,30 +10,34 @@ import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class BookServiceTests {
 
-	private BookService service;
+	@Mock
 	private BookRepository repository;
+	@InjectMocks
+	private BookService service;
+
 	private LogCaptor logCaptor;
 
 	@BeforeEach
 	void setUp() {
-		repository = mock(BookRepository.class);
-		service = new BookService(repository);
 		logCaptor = LogCaptor.forClass(BookService.class);
-
 	}
 
 	/**
@@ -52,7 +56,7 @@ class BookServiceTests {
 	 * Helper method to create a new book dto.
 	 * @return dto.
 	 */
-	BookDto createNewBookDto() {
+	BookDto createValidBookDto() {
 		BookDto dto = new BookDto();
 		dto.setTitle("Six of Crows");
 		dto.setPages(494);
@@ -112,7 +116,7 @@ class BookServiceTests {
 		BookLocationDto dto = createBookLocationDto();
 		Book book = createBook();
 
-		when(repository.findById(1L)).thenReturn(Optional.ofNullable(book));
+		when(repository.findAllById(List.of(1L))).thenReturn(List.of(book));
 		service.updateBookLocations(List.of(dto));
 
 		verify(repository, times(1)).saveAll(any());
@@ -146,14 +150,14 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookCorrectTriggersSaveInRepository() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(any(Book.class));
 	}
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectTitle() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -164,7 +168,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectColor() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -175,7 +179,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectWidth() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -187,7 +191,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookSavedBookHasCorrectInitialPosition() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
 		service.addNewBook(dto);
 		verify(repository, times(1)).save(captor.capture());
@@ -199,7 +203,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfTitleIsBlank() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setTitle(" ");
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -207,7 +211,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfTitleIsMissing() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setTitle(null);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -215,7 +219,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfColorIsMissing() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setColor(null);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -223,7 +227,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfColorIsBlank() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setColor(" ");
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -231,7 +235,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfFontColorIsMissing() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setFontcolor(null);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -239,7 +243,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfFontColorIsBlank() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setFontcolor("       ");
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -247,7 +251,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfNumberOfPagesIsNegative() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setPages(-5);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -255,7 +259,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfNumberOfPagesIsTooLarge() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setPages(Integer.MAX_VALUE);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -263,7 +267,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfFontSizeIsNegative() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setFontsize(-5);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -271,7 +275,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfFontSizeIsTooLarge() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setFontsize(Integer.MAX_VALUE);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -279,7 +283,7 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfHeightIsNegative() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setHeight(-5);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
@@ -287,10 +291,88 @@ class BookServiceTests {
 
 	@Test
 	void testAddNewBookValidationFailsIfHeightIsTooLarge() {
-		BookDto dto = createNewBookDto();
+		BookDto dto = createValidBookDto();
 		dto.setHeight(Integer.MAX_VALUE);
 		boolean result = service.addNewBook(dto);
 		Assertions.assertFalse(result);
 	}
 
+	@Test
+	void testEditBookCorrectTriggersSaveInRepository() {
+		Book book = createBook();
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		when(repository.findById(1L)).thenReturn(Optional.of(book));
+		service.editBook(dto);
+		verify(repository, times(1)).save(any(Book.class));
+	}
+
+	@Test
+	void testEditBookSavedBookHasCorrectTitle() {
+		Book book = createBook();
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		when(repository.findById(1L)).thenReturn(Optional.of(book));
+
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.editBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		Assertions.assertEquals(dto.getTitle(), savedBook.getTitle());
+	}
+
+	@Test
+	void testEditBookSavedBookHasCorrectColor() {
+		Book book = createBook();
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		when(repository.findById(1L)).thenReturn(Optional.of(book));
+
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.editBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		Assertions.assertEquals(dto.getColor(), savedBook.getColor());
+	}
+
+	@Test
+	void testEditBookSavedBookHasCorrectWidth() {
+		Book book = createBook();
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		when(repository.findById(1L)).thenReturn(Optional.of(book));
+
+		ArgumentCaptor<Book> captor = ArgumentCaptor.forClass(Book.class);
+		service.editBook(dto);
+		verify(repository, times(1)).save(captor.capture());
+
+		Book savedBook = captor.getValue();
+		int correctWidth = dto.getPages() / 10;
+		Assertions.assertEquals(correctWidth, savedBook.getBookWidthInMm());
+	}
+
+	@Test
+	void testEditBookBookNotFoundCorrectWarning() {
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		when(repository.findById(1L)).thenReturn(Optional.empty());
+
+		service.editBook(dto);
+		Assertions.assertTrue(
+				logCaptor.getWarnLogs().stream()
+						.anyMatch(msg -> msg.contains("Failed to edit book with ID: 1, book not found")),
+				"Expected warning log was not found"
+		);
+	}
+
+	@Test
+	void testEditBookValidationFailsReturnsFalse() {
+		BookDto dto = createValidBookDto();
+		dto.setId(1L);
+		dto.setPages(-1);
+		boolean result = service.editBook(dto);
+		Assertions.assertFalse(result);
+	}
 }
