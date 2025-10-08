@@ -1,5 +1,6 @@
 package com.palllaura.bookplusplus.controller;
 
+import com.palllaura.bookplusplus.dto.BookDisplayDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
@@ -33,7 +34,7 @@ public class BookController {
      * @return books in a list.
      */
     @GetMapping("/allBooks")
-    public List<Book> getAllBooks() {
+    public List<BookDisplayDto> getAllBooks() {
         return service.getAllBooks();
     }
 

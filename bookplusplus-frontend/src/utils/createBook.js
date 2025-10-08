@@ -1,23 +1,23 @@
 export function createBook({
                                id,
-                               bookWidthInMm = 50,
-                               bookHeightInMm = 120,
+                               title = 'Untitled',
+                               width = 50,
+                               height = 120,
                                color = '#D9722C',
                                fontcolor = '#ffffff',
                                fontsize = 16,
                                xposition = 100,
                                yposition = 200,
-                               title = 'Untitled'
                            }, mm) {
     return {
         id,
-        width: bookWidthInMm * mm,
-        height: bookHeightInMm * mm,
+        title,
+        width: width * mm,
+        height: height * mm,
         color,
         fontcolor,
         fontsize: fontsize * mm,
         x: xposition * mm,
         y: yposition * mm,
-        title
     };
 }

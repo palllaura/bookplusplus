@@ -1,5 +1,6 @@
 package com.palllaura.bookplusplus.service;
 
+import com.palllaura.bookplusplus.dto.BookDisplayDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
@@ -35,8 +36,24 @@ public class BookService {
      * Get all books saved in database.
      * @return books in a list.
      */
-    public List<Book> getAllBooks() {
-        return repository.findAll();
+    public List<BookDisplayDto> getAllBooks() {
+        List<Book> allBooks = repository.findAll();
+        List<BookDisplayDto> dtos = new ArrayList<>();
+
+        for (Book book : allBooks) {
+            BookDisplayDto dto = new BookDisplayDto();
+            dto.setId(book.getId());
+            dto.setTitle(book.getTitle());
+            dto.setHeight(book.getBookHeightInMm());
+            dto.setWidth(book.getBookWidthInMm());
+            dto.setColor(book.getColor());
+            dto.setFontcolor(book.getFontcolor());
+            dto.setFontsize(book.getFontsize());
+            dto.setXPosition(book.getXPosition());
+            dto.setYPosition(book.getYPosition());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     /**
