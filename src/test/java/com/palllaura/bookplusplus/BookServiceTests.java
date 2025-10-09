@@ -1,5 +1,6 @@
 package com.palllaura.bookplusplus;
 
+import com.palllaura.bookplusplus.dto.BookDisplayDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
@@ -74,6 +75,13 @@ class BookServiceTests {
 	Book createBook() {
 		Book book = new Book();
 		book.setId(1L);
+		book.setTitle("Throne of Glass");
+		book.setPages(403);
+		book.setBookWidthInMm(40);
+		book.setBookHeightInMm(200);
+		book.setFontsize(16);
+		book.setColor("#fae804");
+		book.setFontcolor("#ffffff");
 		book.setXPosition(10);
 		book.setYPosition(100);
 		return book;
@@ -83,6 +91,43 @@ class BookServiceTests {
 	void testGetAllBooksTriggersCorrectMethodInRepository() {
 		service.getAllBooks();
 		verify(repository, times(1)).findAll();
+	}
+
+	@Test
+	void testGetAllBooksReturnsAllBooks() {
+		Book book1 = createBook();
+		Book book2 = createBook();
+		Book book3 = createBook();
+
+		when(repository.findAll()).thenReturn(List.of(book1, book2, book3));
+
+		List<BookDisplayDto> result = service.getAllBooks();
+		Assertions.assertEquals(3, result.size());
+	}
+
+	@Test
+	void testGetAllBooksReturnsEmptyListWhenNoBooks() {
+		when(repository.findAll()).thenReturn(List.of());
+		List<BookDisplayDto> result = service.getAllBooks();
+		Assertions.assertTrue(result.isEmpty());
+	}
+
+	@Test
+	void testGetAllBooksReturnsDtosWithCorrectData() {
+		Book book = createBook();
+		when(repository.findAll()).thenReturn(List.of(book));
+		List<BookDisplayDto> resultList = service.getAllBooks();
+		BookDisplayDto result = resultList.get(0);
+
+		Assertions.assertEquals(book.getId(), result.getId());
+		Assertions.assertEquals(book.getTitle(), result.getTitle());
+		Assertions.assertEquals(book.getBookWidthInMm(), result.getWidth());
+		Assertions.assertEquals(book.getBookHeightInMm(), result.getHeight());
+		Assertions.assertEquals(book.getFontsize(), result.getFontsize());
+		Assertions.assertEquals(book.getFontcolor(), result.getFontcolor());
+		Assertions.assertEquals(book.getColor(), result.getColor());
+		Assertions.assertEquals(book.getXPosition(), result.getXPosition());
+		Assertions.assertEquals(book.getYPosition(), result.getYPosition());
 	}
 
 	@Test
