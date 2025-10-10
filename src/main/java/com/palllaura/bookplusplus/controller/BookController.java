@@ -1,9 +1,9 @@
 package com.palllaura.bookplusplus.controller;
 
 import com.palllaura.bookplusplus.dto.BookDisplayDto;
+import com.palllaura.bookplusplus.dto.BookFullDetailsDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
-import com.palllaura.bookplusplus.entity.Book;
 import com.palllaura.bookplusplus.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +41,10 @@ public class BookController {
     /**
      * Get book by id.
      * @param id id of book.
-     * @return book.
+     * @return dto with book info.
      */
     @GetMapping("/fetchBook/{id}")
-    public Book getBookById(@PathVariable Long id) {
+    public BookFullDetailsDto getBookById(@PathVariable Long id) {
         return service.getBookById(id);
     }
 

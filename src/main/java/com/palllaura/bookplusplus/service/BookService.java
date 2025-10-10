@@ -1,6 +1,7 @@
 package com.palllaura.bookplusplus.service;
 
 import com.palllaura.bookplusplus.dto.BookDisplayDto;
+import com.palllaura.bookplusplus.dto.BookFullDetailsDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
@@ -61,12 +62,21 @@ public class BookService {
      * @param id id of book.
      * @return optional of book.
      */
-    public Book getBookById(Long id) {
+    public BookFullDetailsDto getBookById(Long id) {
         Optional<Book> bookOptional = repository.findById(id);
         if (bookOptional.isEmpty()) {
             throw new EntityNotFoundException("Book with id " + id + " not found");
         }
-        return bookOptional.get();
+        Book book = bookOptional.get();
+        BookFullDetailsDto dto = new BookFullDetailsDto();
+        dto.setId(book.getId());
+        dto.setTitle(book.getTitle());
+        dto.setHeight(book.getBookHeightInMm());
+        dto.setPages(book.getPages());
+        dto.setColor(book.getColor());
+        dto.setFontcolor(book.getFontcolor());
+        dto.setFontsize(book.getFontsize());
+        return dto;
     }
 
     /**
