@@ -3,6 +3,11 @@ export async function fetchBooks() {
     return await response.json();
 }
 
+export async function fetchBookById(id) {
+    const response = await fetch('http://localhost:8080/api/fetchBook/{id}');
+    return await response.json();
+}
+
 export async function saveBookLocations(locations) {
     const response = await fetch('http://localhost:8080/api/saveLocations', {
         method: 'POST',
