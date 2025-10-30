@@ -1,6 +1,7 @@
 package com.palllaura.bookplusplus;
 
 import com.palllaura.bookplusplus.dto.BookDisplayDto;
+import com.palllaura.bookplusplus.dto.BookFullDetailsDto;
 import com.palllaura.bookplusplus.dto.BookLocationDto;
 import com.palllaura.bookplusplus.dto.BookDto;
 import com.palllaura.bookplusplus.entity.Book;
@@ -134,8 +135,8 @@ class BookServiceTests {
 	void testGetBookByIdReturnsCorrectBook() {
 		Book book = createBook();
 		when(repository.findById(1L)).thenReturn(Optional.of(book));
-		Book result = service.getBookById(1L);
-		Assertions.assertEquals(result, book);
+		BookFullDetailsDto result = service.getBookById(1L);
+		Assertions.assertEquals(1L, result.getId());
 	}
 
 	@Test
