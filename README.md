@@ -22,8 +22,6 @@ A draggable 2D bookshelf
 
 ### Database (PostgreSQL via Docker)
 1. Run the container:
-   ```bash
-1. Run the container:
       ```bash
    docker run -d \
      --name postgres-db \
