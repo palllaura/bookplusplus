@@ -4,7 +4,7 @@ import save from "../assets/savebutton.png";
 import close from "../assets/close.png"
 import Canvas from "./BookPreviewCanvas.jsx";
 
-export default function AddBookModal({ onSave, onClose }) {
+export default function EditBookModal({ onSave, onClose }) {
     const [title, setTitle] = useState("");
     const [pages, setPages] = useState("");
     const [height, setHeight] = useState("");
@@ -28,7 +28,7 @@ export default function AddBookModal({ onSave, onClose }) {
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h3>Add new book</h3>
+                    <h3>Edit book</h3>
                     <img src={close}
                          className="button"
                          alt="close button"
