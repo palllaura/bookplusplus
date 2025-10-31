@@ -4,11 +4,13 @@ import Canvas from "./components/Canvas.jsx";
 import {addBook, fetchBooks, saveBookLocations} from './services/bookService';
 import {useEffect, useRef, useState} from "react";
 import AddBookModal from "./components/AddBookModal.jsx";
+import EditBookModal from "./components/EditBookModal.jsx";
 
 function App() {
     const [books, setBooks] = useState([]);
     const canvasRef = useRef(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
+    const [isEditBookModalOpen, setIsEditBookModalOpen] = useState(false);
 
     const loadBooks = async () => {
         try {
@@ -54,20 +56,40 @@ function App() {
         }
     }
 
+    const fetchBook = async (id) => {
+        try {
+            await fetchBook(id);
+        } catch (error) {
+            console.error('Failed to fetch book: ', error);
+            alert('Failed to fetch book')
+        }
+    }
+
     return (
         <div className="app-container">
             <Sidebar
                 onSave={handleSave}
-                onAddBook={() => setIsModalOpen(true)}
+                onAddBook={() => setIsAddBookModalOpen(true)}
                 onReload={handleReload}
             />
             <div className="canvas-wrapper">
-                <Canvas ref={canvasRef} books={books} />
+                <Canvas ref={canvasRef}
+                        books={books}
+                        onEdit={() => setIsEditBookModalOpen(true)}
+                />
             </div>
-            {isModalOpen && (<AddBookModal
+            {isAddBookModalOpen && (<AddBookModal
                 onSave={handleAddBook}
-                onClose={() => setIsModalOpen(false)}
-            />)}
+                onClose={() => setIsAddBookModalOpen(false)}
+            />
+            )}
+
+            {isEditBookModalOpen && (<EditBookModal
+                    onOpen={fetchBook}
+                    onClose={() => setIsEditBookModalOpen(false)}
+                />
+            )}
+
         </div>
     )
 }

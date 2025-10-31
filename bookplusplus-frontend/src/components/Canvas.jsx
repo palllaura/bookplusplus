@@ -4,7 +4,7 @@ import {createBook} from "../utils/createBook.js";
 import box from "../assets/box.png";
 import useImage from 'use-image';
 
-const Canvas = forwardRef(({books}, ref) => {
+const Canvas = forwardRef(({books, onEdit}, ref) => {
     const [drawnBooks, setDrawnBooks] = useState([]);
     const mm = window.innerHeight / 1000;
     const [boxImage] = useImage(box);
@@ -145,7 +145,6 @@ const Canvas = forwardRef(({books}, ref) => {
         setDrawnBooks(drawnBooks.map(b => b.id === bookId ? updatedBook : b));
     };
 
-
     return (
         <Stage
             width={window.innerWidth}
@@ -183,6 +182,7 @@ const Canvas = forwardRef(({books}, ref) => {
                         onDragStart={(e) => handleDragStart(book.id, e)}
                         onDragMove={(e) => handleDragMove(e, book.id)}
                         onDragEnd={(e) => handleDragEnd(e, book.id)}
+                        onDblClick={onEdit}
                     >
                         <Rect
                             width={book.width}
