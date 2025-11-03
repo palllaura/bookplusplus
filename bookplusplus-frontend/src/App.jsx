@@ -1,13 +1,14 @@
 import './App.css'
 import Sidebar from "./components/Sidebar.jsx";
 import Canvas from "./components/Canvas.jsx";
-import {addBook, fetchBooks, saveBookLocations} from './services/bookService';
+import {addBook, fetchBookById, fetchBooks, saveBookLocations} from './services/bookService';
 import {useEffect, useRef, useState} from "react";
 import AddBookModal from "./components/AddBookModal.jsx";
 import EditBookModal from "./components/EditBookModal.jsx";
 
 function App() {
     const [books, setBooks] = useState([]);
+    const [bookToEdit, setBookToEdit] = useState();
     const canvasRef = useRef(null);
     const [isAddBookModalOpen, setIsAddBookModalOpen] = useState(false);
     const [isEditBookModalOpen, setIsEditBookModalOpen] = useState(false);
@@ -21,6 +22,16 @@ function App() {
             console.error('Failed to fetch books:', error);
         }
     };
+
+    const getBookToEdit = async (id) => {
+        try {
+            const book = await fetchBookById(id);
+            setBookToEdit(book);
+        } catch (error) {
+            console.error('Failed to fetch book: ', error);
+            alert('Failed to fetch book')
+        }
+    }
 
     useEffect(() => {
         loadBooks();
@@ -56,15 +67,6 @@ function App() {
         }
     }
 
-    const fetchBook = async (id) => {
-        try {
-            await fetchBook(id);
-        } catch (error) {
-            console.error('Failed to fetch book: ', error);
-            alert('Failed to fetch book')
-        }
-    }
-
     return (
         <div className="app-container">
             <Sidebar
@@ -73,9 +75,13 @@ function App() {
                 onReload={handleReload}
             />
             <div className="canvas-wrapper">
-                <Canvas ref={canvasRef}
-                        books={books}
-                        onEdit={() => setIsEditBookModalOpen(true)}
+                <Canvas
+                    ref={canvasRef}
+                    books={books}
+                    onEdit={async (id) => {
+                        await getBookToEdit(id);
+                        setIsEditBookModalOpen(true);
+                    }}
                 />
             </div>
             {isAddBookModalOpen && (<AddBookModal
@@ -84,9 +90,10 @@ function App() {
             />
             )}
 
-            {isEditBookModalOpen && (<EditBookModal
-                    onOpen={fetchBook}
+            {isEditBookModalOpen && (
+                <EditBookModal
                     onClose={() => setIsEditBookModalOpen(false)}
+                    bookToEdit={bookToEdit}
                 />
             )}
 

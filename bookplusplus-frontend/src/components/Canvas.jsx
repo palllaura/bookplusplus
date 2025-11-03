@@ -182,7 +182,7 @@ const Canvas = forwardRef(({books, onEdit}, ref) => {
                         onDragStart={(e) => handleDragStart(book.id, e)}
                         onDragMove={(e) => handleDragMove(e, book.id)}
                         onDragEnd={(e) => handleDragEnd(e, book.id)}
-                        onDblClick={onEdit}
+                        onDblClick={() => onEdit(book.id)}
                     >
                         <Rect
                             width={book.width}

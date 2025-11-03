@@ -4,7 +4,10 @@ export async function fetchBooks() {
 }
 
 export async function fetchBookById(id) {
-    const response = await fetch('http://localhost:8080/api/fetchBook/{id}');
+    const response = await fetch(`http://localhost:8080/api/fetchBook/${id}`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch book with id ${id}`);
+    }
     return await response.json();
 }
 
